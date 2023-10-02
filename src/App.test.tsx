@@ -14,16 +14,16 @@ vi.mock('useGetUsers', () => ({
 describe('App', () => {
   it('renders users by default', () => {
     render(<App />);
-    expect(screen.getByText('Users')).toBeInTheDocument();
-    expect(screen.queryByText('Views')).not.toBeInTheDocument();
+    expect(screen.getByText(/User/)).toBeInTheDocument();
+    expect(screen.queryByText(/Views/)).not.toBeInTheDocument();
   });
 
   it('renders views when a user is selected', () => {
     render(<App />);
-    expect(screen.queryByText('Views')).not.toBeInTheDocument();
+    expect(screen.queryByText(/Views/)).not.toBeInTheDocument();
 
-    screen.getByText('User 1').click();
+    screen.getByText(/User 1/).click();
 
-    expect(screen.getByText('Views')).toBeInTheDocument();
+    expect(screen.getByText(/Views/)).toBeInTheDocument();
   });
 });
