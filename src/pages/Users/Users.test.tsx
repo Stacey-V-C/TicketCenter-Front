@@ -5,8 +5,8 @@ import { Users } from '.';
 const mockSetter = vi.fn();
 
 const mockUsers = {
-  red: ['User A'],
-  blue: ['User B', 'User C'],
+  'red': ['User A'],
+  'blue': ['User B', 'User C'],
 };
 
 describe('Users page', () => {
@@ -14,9 +14,9 @@ describe('Users page', () => {
     render(<Users onSelect={mockSetter} users={mockUsers} />);
 
     expect(screen.queryAllByRole('button')).toHaveLength(3);
-    expect(screen.getAllByText(/User A/)).toBeInTheDocument();
-    expect(screen.getAllByText(/User B/)).toBeInTheDocument();
-    expect(screen.getAllByText(/User C/)).toBeInTheDocument();
+    expect(screen.getByText(/User A/)).toBeInTheDocument();
+    expect(screen.getByText(/User B/)).toBeInTheDocument();
+    expect(screen.getByText(/User C/)).toBeInTheDocument();
   });
 
   it('calls the onSelect function with the id of the select user', () => {
@@ -24,6 +24,9 @@ describe('Users page', () => {
 
     screen.getByText(/User A/).click();
 
-    expect(mockSetter).toHaveBeenCalledWith('User A');
+    expect(mockSetter).toHaveBeenCalledWith({
+      id: 'User A',
+      team: 'red',
+    });
   })
 })

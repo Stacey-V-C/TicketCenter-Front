@@ -12,8 +12,8 @@ export type Ticket = {
 }
 
 export enum PluginType {
-  BOLD_TEXT,
   FILTER_AREAS,
+  BOLD_TEXT,
 }
 
 export type Plugin =
@@ -26,16 +26,20 @@ export type Plugin =
     readonly keptAreas: Area[],
   }
 
-  export type PluginSummary = {
-    plugin: Plugin,
-    summary: {
-      keptAreas?: Area[],
-      boldedWords?: string[],
-    }
+export type PluginSummary = {
+  plugin: Plugin,
+  state: {
+    areas?: Area[],
+    boldWords?: string[],
   }
+}
 
 export type View = {
   name: string,
   plugins: PluginSummary[],
+  latestState: {
+    areas?: Area[],
+    boldWords?: string[],
+  },
   tickets: Ticket[],
 }
