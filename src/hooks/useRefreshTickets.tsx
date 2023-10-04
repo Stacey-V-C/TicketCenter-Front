@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "react-query";
-import { URLs } from "../util";
+import { URLs, queryKeys } from "../util";
 
 export const useRefreshTickets = () => {
   const queryClient = useQueryClient();
@@ -11,7 +11,7 @@ export const useRefreshTickets = () => {
     },
     {
       onSettled: () => {
-        queryClient.refetchQueries(["userData"]);
+        queryClient.refetchQueries([queryKeys.userData]);
       }
     }
   );

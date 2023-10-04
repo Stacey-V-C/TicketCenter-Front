@@ -5,15 +5,12 @@ import { useRefreshTickets } from "./useRefreshTickets";
 import { UpdatePluginsRequest, useUpdatePlugins } from "./useUpdatePlugins";
 
 import type { View } from "../types";
-import { MutationOptions } from "react-query";
+import { UseMutateFunction } from "react-query";
 
 export type QueryContextType = {
   isLoading: boolean;
   refreshTickets: () => void;
-  updatePlugins: ({
-    plugins,
-    isTeamSettings,
-  }: UpdatePluginsRequest, options?: MutationOptions) => void;
+  updatePlugins: UseMutateFunction<unknown, unknown, UpdatePluginsRequest>;
   views: View[];
   userId: string;
 }
@@ -21,13 +18,13 @@ export type QueryContextType = {
 export const QueryContext = createContext<QueryContextType | null>(null);
 
 export const useQueryContext = () => {
-    const context = useContext(QueryContext);
-    
-    if (context === null) {
-        throw new Error("useQueryContext must be used within a QueryContextProvider");
-    }
-    
-    return context;
+  const context = useContext(QueryContext);
+
+  if (context === null) {
+    throw new Error("useQueryContext must be used within a QueryContextProvider");
+  }
+
+  return context;
 }
 
 export const QueryContextProvider = ({ userId, children }: { children: React.ReactNode, userId: string }) => {

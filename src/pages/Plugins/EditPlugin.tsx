@@ -60,20 +60,22 @@ export const EditPlugin: FunctionComponent<Props> = ({ index, pluginSummary, onS
 
   return (
     <Box color="black">
-      <h2 className="text-lg font-bold">Editing Plugin</h2>
+      <h2 className="text-lg font-bold mb-2">Editing Plugin</h2>
       <p className="text-sm font-bold">Plugin Type:</p>
-      <select
-        data-testid="plugin-type-menu"
-        className="ml-2 p-1 border-2 border-black"
-        value={pluginType || undefined}
-        onChange={(e) => {
-          setPluginType(e.target.value)
-        }}
-      >
-        <option value="">Select a plugin type</option>
-        <option value={getTypeString(PluginType.BOLD_TEXT)}>Bold Text</option>
-        <option value={getTypeString(PluginType.FILTER_AREAS)}>Filter Areas</option>
-      </select>
+      <div className="w-2xs my-2">
+        <select
+          data-testid="plugin-type-menu"
+          className="ml-2 p-1 border-2 border-black"
+          value={pluginType || undefined}
+          onChange={(e) => {
+            setPluginType(e.target.value)
+          }}
+        >
+          <option value="">Select a plugin type</option>
+          <option value={getTypeString(PluginType.BOLD_TEXT)}>Bold Text</option>
+          <option value={getTypeString(PluginType.FILTER_AREAS)}>Filter Areas</option>
+        </select>
+      </div>
       {pluginType === 'b' ? (
         <div>
           <p className="text-sm font-bold">Word:</p>

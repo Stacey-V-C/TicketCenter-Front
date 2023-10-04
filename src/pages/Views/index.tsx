@@ -28,12 +28,14 @@ export const Views: FunctionComponent<Props> = ({ team, unselect }) => {
       latestState={editingView.latestState}
       onClose={() => setEditingView(null)}
       plugins={editingView.plugins || []}
-      isTeamSettings={editingView?.name === 'Team'}
+      name={editingView.name}
     />
   );
 
   const oppositeTeam = team === 'red' ? 'skyBlue' : 'red';
   const colorFromTeam = team === 'red' ? 'red' : 'skyBlue';
+
+  const canEdit = (view: View) => view.plugins?.length || userId === view.name;
 
   return (
     <div className="flex flex-col">
@@ -46,42 +48,35 @@ export const Views: FunctionComponent<Props> = ({ team, unselect }) => {
           Back
         </Button>
       </div>
-      {!isLoading ? views?.map(view => (
-        <div className="w-90">
-          <h2 className="text-xl font-bold">{view.name}</h2>
-          {!view.plugins?.length && !view.tickets?.length ? (
-            <Box color={oppositeTeam}>
-              <p>View {view.name} has no plugins or tickets!</p>
-            </Box>
-          ) : (
-            <div>
-              {view.plugins?.length || userId === view.name ? (
+      <div className="flex">
+        {!isLoading ? views?.map(view => (
+          <div className="w-90">
+            <div className="flex p-2 items-center space-between">
+              <h2 className="text-xl font-bold">{view.name}</h2>
+              {canEdit(view) ? (
                 <Button color={oppositeTeam} onClick={() => setEditingView(view)}>
                   Edit Plugins
                 </Button>
-              ) : null}
-              <div>
-                {
-                  view.tickets?.length ? (
-                    view.tickets.map(ticket => (
-                      <Ticket
-                        key={ticket.id}
-                        area={ticket.area}
-                        content={ticket.content}
-                      />
-                    ))
-                  ) : (
-                    <div className="h-full w-full flex justify-center items-center">
-                      <p className="z-400 opacity-50 h-full w-full"></p>
-                      <p className="z-500">Loading...</p>
-                    </div>
-                  )
-                }
-              </div>
+              ) : <div className="mb-8 mt-4" />}
             </div>
-          )}
-        </div >
-      )) : null}
+            {!view.tickets?.length ? (
+              <Box color={oppositeTeam}>
+                <p>View {view.name} has no plugins or tickets!</p>
+              </Box>
+            ) : (
+              <div>
+                {view.tickets.map(ticket => (
+                  <Ticket
+                    key={ticket.id}
+                    area={ticket.area}
+                    content={ticket.content}
+                  />
+                ))}
+              </div>
+            )}
+          </div >
+        )) : null}
+      </div>
     </div >
   )
 };

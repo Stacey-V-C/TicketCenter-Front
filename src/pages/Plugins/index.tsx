@@ -10,7 +10,7 @@ import { EditPlugin } from './EditPlugin';
 type Props = {
   onClose: () => void;
   latestState: PluginSummary['state'];
-  isTeamSettings: boolean;
+  name: string;
   plugins: PluginSummary[];
   team?: 'red' | 'blue';
 }
@@ -28,7 +28,7 @@ type EditingPluginState = {
 export const Plugins: FunctionComponent<Props> = ({
   onClose,
   latestState,
-  isTeamSettings,
+  name,
   plugins,
   team = 'red'
 }) => {
@@ -37,6 +37,10 @@ export const Plugins: FunctionComponent<Props> = ({
 
   const colorByTeam = team === 'red' ? 'red' : 'skyBlue';
   const oppositeTeam = team === 'red' ? 'skyBlue' : 'red';
+
+  const isTeamSettings = name === 'Team';
+
+  console.log('isTeamSettings', isTeamSettings)
 
   const handleRemove = (i: number) => {
     const newPlugins = plugins
@@ -61,36 +65,38 @@ export const Plugins: FunctionComponent<Props> = ({
     });
   }
 
-  return editingPlugin ? (
-    <EditPlugin
-      pluginSummary={editingPlugin.plugin}
-      index={editingPlugin.index}
-      onCancel={() => setEditingPlugin(null)}
-      onSubmit={handleSubmit} />
-  ) : (
-    <Box color="black">
-      <Button color="grey" onClick={onClose}>Back</Button>
-      {plugins.map((p, i) => (
-        <DisplayPlugin
-          key={i}
-          color={i % 2 === 0 ? colorByTeam : oppositeTeam}
-          plugin={p.plugin}
-          onEdit={() => setEditingPlugin({ plugin: p, index: i })}
-          onRemove={() => handleRemove(i)}
-        />
-      ))}
-      <Button
-        color="green"
-        onClick={() => setEditingPlugin({
-          plugin: {
-            plugin: null,
-            state: latestState,
-          },
-          index: plugins.length,
-        })}
-      >
-        New
-      </Button>
-    </Box>
+  return (
+    <div className="max-w-sm">
+      <h2 className="text-lg font-bold mb-2">{`${name}: Plugins`}</h2>
+      {editingPlugin ? (
+        <EditPlugin
+          pluginSummary={editingPlugin.plugin}
+          index={editingPlugin.index}
+          onCancel={() => setEditingPlugin(null)}
+          onSubmit={handleSubmit} />
+      ) : (
+        <Box color="black">
+          <Button color="grey" onClick={onClose}>Back</Button>
+          {plugins.map((p, i) => (
+            <DisplayPlugin
+              key={i}
+              color={i % 2 === 0 ? colorByTeam : oppositeTeam}
+              plugin={p.plugin}
+              onEdit={() => setEditingPlugin({ plugin: p, index: i })}
+              onRemove={() => handleRemove(i)}
+            />
+          ))}
+          <Button
+            color="green"
+            onClick={() => setEditingPlugin({
+              plugin: { plugin: null, state: latestState },
+              index: plugins.length,
+            })}
+          >
+            New
+          </Button>
+        </Box>
+      )}
+    </div>
   )
 }
